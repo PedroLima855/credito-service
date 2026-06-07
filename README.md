@@ -10,6 +10,7 @@ Microserviço de gestão de créditos para parceiros em uma plataforma B2B. Proj
 - [Tecnologias](#-tecnologias)
 - [Arquitetura](#-arquitetura)
 - [Como Executar](#-como-executar)
+- [Documentação Swagger](#-documentação-swagger)
 - [Endpoints da API](#-endpoints-da-api)
 - [Modelo de Dados](#-modelo-de-dados)
 - [Funcionalidades](#-funcionalidades)
@@ -41,6 +42,7 @@ Sistema crítico para operação B2B que permite a milhares de parceiros simulta
 | **RabbitMQ 3** | Mensageria / Notificações |
 | **Caffeine** | Cache em memória |
 | **Spring Retry** | Mecanismo de retry |
+| **SpringDoc OpenAPI** | Documentação Swagger |
 | **Docker Compose** | Orquestração de containers |
 | **JUnit 5 + Mockito** | Testes |
 
@@ -67,7 +69,7 @@ service/        → Regras de negócio + cache + retry
 repository/     → Acesso a dados + lock pessimista
 entity/         → Entidades JPA
 dto/            → Objetos de request/response
-config/         → Configurações (RabbitMQ)
+config/         → Configurações (RabbitMQ, OpenAPI)
 ```
 
 ---
@@ -96,13 +98,30 @@ Pré-requisitos: PostgreSQL e RabbitMQ rodando em localhost.
 
 ```bash
 # Criar o banco
-createdb gt_dados
+createdb gest_dados
 
 # Rodar a aplicação
 ./mvnw spring-boot:run
 ```
 
 O Flyway cria as tabelas automaticamente no startup.
+
+---
+
+## 📖 Documentação Swagger
+
+Com a aplicação rodando, acesse a documentação interativa da API:
+
+| Recurso | URL |
+|---|---|
+| **Swagger UI** | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+| **OpenAPI JSON** | [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) |
+
+A interface do Swagger permite:
+- 📝 Visualizar todos os endpoints documentados
+- ▶️ Testar requisições diretamente no navegador
+- 📋 Ver schemas de request/response
+- 🔍 Explorar os códigos de status e descrições
 
 ---
 
@@ -335,6 +354,7 @@ credito-service/
     │   ├── kotlin/com/credito/
     │   │   ├── CreditoServiceApplication.kt
     │   │   ├── config/
+    │   │   │   ├── OpenApiConfig.kt
     │   │   │   └── RabbitConfig.kt
     │   │   ├── controller/
     │   │   │   ├── CreditoController.kt
