@@ -57,7 +57,6 @@ class CreditoService(
             repository.findByChaveIdempotencia(chave)?.let { return it.toResponse() }
         }
 
-        // Lock pessimista para evitar race condition em débitos concorrentes
         val saldoAtual = repository.calcularSaldoComLock(request.parceiroId)
 
         if (saldoAtual < request.valor) {
